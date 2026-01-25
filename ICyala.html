@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Interact Club of Yala — Youth Home</title>
+<style>
+:root{
+    --blue-600: #0b61b5;
+    --blue-400: #2e86ff;
+    --yellow-500: #ffd54f;
+    --yellow-600: #ffca28;
+    --bg: #f7fbff;
+    --card: #ffffff;
+    --muted: #556677;
+    --radius: 12px;
+}
+*{box-sizing:border-box;}
+html,body{height:100%; margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg, var(--bg), #fff); color:#113; line-height:1.5; padding:0 1.25rem;}
+header{
+    max-width:1100px; margin:1rem auto; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.brand{ display:flex; gap:.75rem; align-items:center; text-decoration:none; color:var(--blue-600);}
+.logo{ width:56px; height:56px; border-radius:12px; background: linear-gradient(135deg,var(--yellow-500),var(--yellow-600)); display:grid; place-items:center; font-weight:700; color:var(--blue-600); font-size:20px; box-shadow:0 6px 18px rgba(11,97,181,0.12);}
+nav a{ margin-left:.75rem; color:var(--muted); text-decoration:none; padding:.4rem .6rem; border-radius:8px; transition:all .18s ease; font-weight:600; font-size:0.95rem;}
+nav a:hover{ background: #eef6ff; color:var(--blue-600);}
+.hero{ max-width:1100px; margin:0 auto 2rem; display:grid; grid-template-columns: 1fr 360px; gap:1.25rem; align-items:center;}
+.hero-card{ background:linear-gradient(180deg, rgba(255,245,224,0.9), rgba(255,250,240,0.6)); padding:2rem; border-radius:var(--radius); box-shadow:0 10px 30px rgba(11,97,181,0.07);}
+h1{ margin:0 0 .4rem 0; color:var(--blue-600); font-size:1.9rem; line-height:1.05;}
+p.lead{ margin:0 0 1rem 0; color:var(--muted);}
+.cta-row{ display:flex; gap:.75rem; align-items:center; margin-top:.75rem;}
+.btn{ background:var(--blue-600); color:white; border:0; padding:.6rem .9rem; border-radius:10px; cursor:pointer; font-weight:700; box-shadow:0 6px 18px rgba(11,97,181,0.12);}
+.btn.secondary{ background:transparent; color:var(--blue-600); border:2px solid rgba(11,97,181,0.08);}
+.hero-aside{ padding:1.25rem; border-radius:var(--radius); background: linear-gradient(180deg, rgba(11,97,181,0.07), rgba(11,97,181,0.03)); display:flex; flex-direction:column; gap:.8rem;}
+.stats{ display:flex; gap:.6rem; justify-content:space-between; align-items:center;}
+.stat{ flex:1; background:var(--card); padding:.6rem; border-radius:10px; text-align:center; box-shadow:0 6px 14px rgba(11,97,181,0.04);}
+.stat strong{display:block; color:var(--blue-600); font-size:1.05rem;}
+main{ max-width:1100px; margin:0 auto 3rem; display:grid; gap:1rem;}
+.grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;}
+.grid-gallery{ display:grid; grid-template-columns: repeat(4, 1fr); gap:.6rem; margin-top:.8rem;}
+/* Board of Directors */
+/* BOD Section Alternating Layout */
+.grid-bod {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+.bod-member {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    background: #fcfdff;
+    border-radius: 12px;
+    border: 1px solid rgba(11,97,181,0.05);
+    box-shadow: 0 4px 12px rgba(11,97,181,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.6s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.bod-member.reverse {
+    flex-direction: row-reverse;
+}
+
+.photo-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;      /* or 50% for circle */
+    overflow: hidden;        /* keeps image inside box */
+    background: #ddd;        /* fallback if image fails */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;       /* fills box without overflow */
+}
+
+
+.bod-member:hover .photo-placeholder {
+    transform: scale(1.05);
+}
+
+.bod-member .details {
+    display: flex;
+    flex-direction: column;
+}
+
+.bod-member .role {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--yellow-600);
+    margin-bottom: 0.3rem;
+}
+
+.bod-member strong {
+    font-size: 1rem;
+    color: var(--blue-600);
+    margin-bottom: 0.2rem;
+}
+
+.bod-member .small {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.bod-member.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width:900px){
+    .bod-member, .bod-member.reverse{
+        flex-direction: column;
+        text-align: center;
+    }
+    .bod-member.reverse { flex-direction: column; }
+    .bod-member .photo-placeholder{ margin-bottom: 0.8rem; }
+}
+
+
+/* Events */
+.events{ display:flex; flex-direction:column; gap:.6rem;}
+.event{ display:flex; gap:.8rem; align-items:center; padding:.65rem; border-radius:10px; background: linear-gradient(90deg,#fff,#fbfbff); border:1px solid rgba(11,97,181,0.04);}
+.event .date{ min-width:72px; text-align:center; background:linear-gradient(180deg,var(--blue-600),var(--blue-400)); color:white; padding:.5rem .4rem; border-radius:8px; font-weight:700;}
+.event .meta{ color:var(--muted);}
+.gallery-item{ height:120px; border-radius:8px; background:#ddd; display:grid; place-items:center; overflow:hidden; position:relative; box-shadow:0 4px 10px rgba(0,0,0,0.05); transition: transform .2s ease;}
+.gallery-item:hover{ transform: scale(1.03); cursor:pointer;}
+.gallery-item div{ font-size:0.8rem; color:var(--blue-600); background:rgba(255,255,255,0.7); padding:.3rem; border-radius:4px; font-weight:600; z-index:1;}
+footer{ max-width:1100px; margin:2rem auto 3rem; display:flex; gap:1rem; align-items:flex-start; justify-content:space-between;}
+.contact-card{ flex:1; padding:1rem; border-radius:12px; background:linear-gradient(180deg, rgba(255,250,240,0.9), rgba(255,255,255,0.95)); box-shadow:0 8px 30px rgba(11,97,181,0.04);}
+form{ display:grid; gap:.6rem;}
+input,textarea{ padding:.6rem .7rem; border-radius:8px; border:1px solid rgba(11,97,181,0.08); width:100%; font-size:0.95rem;}
+textarea{ min-height:110px; resize:vertical;}
+.small{ font-size:.85rem; color:var(--muted);}
+@media (max-width:900px){ .hero{ grid-template-columns:1fr;} .grid-3{ grid-template-columns: repeat(2,1fr);} .hero-aside{ order:2;} .grid-gallery{ grid-template-columns:repeat(2,1fr);} footer{ flex-direction:column; align-items:center; text-align:center;} .contact-card{ width:100%;} }
+@media (max-width:550px){ .grid-3{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+    <a class="brand" href="#">
+        <div class="logo">ICY</div>
+        <div>
+            <div style="font-weight:800; color:var(--blue-600)">Interact Club of Yala</div>
+            <div style="font-size:0.85rem; color:var(--muted)">Youth • Service • Leadership</div>
+        </div>
+    </a>
+    <nav aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#board">Board</a>
+        <a href="#events">Events</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#join">Join</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<section class="hero" aria-labelledby="hero-title">
+    <div class="hero-card">
+        <h1 id="hero-title">Empowering Youth in Lalitpur — Connect. Serve. Lead.</h1>
+        <p class="lead">Join a welcoming community of young people committed to service projects, personal growth and positive impact in our town and beyond.</p>
+        <div class="cta-row">
+            <button class="btn" onclick="document.querySelector('#join').scrollIntoView({behavior:'smooth'})">Become a Member</button>
+            <button class="btn secondary" onclick="document.querySelector('#events').scrollIntoView({behavior:'smooth'})">See Events</button>
+        </div>
+    </div>
+</section>
+
+<main>
+<section id="about" class="card">
+    <h3>About Us</h3>
+    <p class="small">Interact Club of Yala brings together youth aged 10–18 to learn leadership skills, take part in community service, and build friendships. We organize cleanups, tutoring programs, health drives, and cultural events to bring about a positive change.</p>
+</section>
+
+<!-- Board of Directors -->
+<<!-- Board of Directors -->
+<section id="board" class="card">
+    <h3>Meet Our Board of Directors (2025-2026)</h3>
+    <div class="grid-bod">
+        <div class="bod-member">
+            <div class="photo-placeholder">  </div>
+            <div class="details">
+                <div class="role">President</div>
+                <strong>Sakina Maharjan</strong>
+                <div class="small">Leads the club's mission.</div>
+            </div>
+        </div>
+  <div class="bod-member reverse">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Immediate Past President</div>
+                <strong>Angel Khatri</strong>
+                <div class="small">Our past president.</div>
+            </div>
+        </div>
+        <div class="bod-member ">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Vice President</div>
+                <strong>Shreeyas</strong>
+                <div class="small">Oversees Club in absence of President.</div>
+            </div>
+        </div>
+
+        <div class="bod-member reverse">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Secretary</div>
+                <strong>Samrat Acharya</strong>
+                <div class="small">Handles records and admin.</div>
+            </div>
+        </div>
+
+        <div class="bod-member ">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Joint Secretary</div>
+                <strong>Demisha Dahal</strong>
+                <div class="small">Manages records and assists Secretary.</div>
+            </div>
+        </div>
+
+        <div class="bod-member reverse">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Treasurer</div>
+                <strong>Rajababu Gupta</strong>
+                <div class="small">Manages finance.</div>
+            </div>
+        </div>
+
+        <div class="bod-member">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Community Service Director</div>
+                <strong>Surishma Adhikari</strong>
+                <div class="small">Leads local service projects.</div>
+            </div>
+        </div>
+
+        <div class="bod-member reverse">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">International Service Director</div>
+                <strong>Edward Karki</strong>
+                <div class="small">Handles global initiatives.</div>
+            </div>
+        </div>
+
+        <div class="bod-member ">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Club Service Director</div>
+                <strong>Goma Subedi</strong>
+                <div class="small">Focuses on fellowship & fun.</div>
+            </div>
+        </div>
+
+        <div class="bod-member reverse">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">IT Head</div>
+                <strong>Sandip Thapa</strong>
+                <div class="small">Deals with all the tech related stuff for the club.</div>
+            </div>
+        </div>
+
+        <div class="bod-member ">
+            <div class="photo-placeholder"></div>
+            <div class="details">
+                <div class="role">Seargant at Arms</div>
+                <strong>Utsav Chaulagain</strong>
+                <div class="small">handles discipline and decorum.</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- What We Do / Workshops / Join -->
+<section class="grid-3">
+    <div class="card">
+        <h3>What We Do</h3>
+        <ul class="feature-list">
+            <li>Community service</li>
+            <li>Enviromental Actions</li>
+            <li>Youth Empowerment </li>
+            <li>School Engagement </li>
+            <li>Global Connections </li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Upcoming Workshops</h3>
+        <ul class="feature-list">
+            <li>Interact and Impact:Public speaking workshop — Soon</li>
+            <li> Many more Soon</li>
+        </ul>
+    </div>
+    <div class="card" id="join">
+        <h3>How to Join</h3>
+        <p class="small">Anyone aged 10–18 interested in community service is welcome. Attend a meeting or sign up online to become a member and start participating in events.</p>
+        <div style="margin-top:.6rem">
+            <button class="btn" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Sign Up / Contact</button>
+        </div>
+    </div>
+</section>
+
+<!-- Events -->
+<section id="events" class="card">
+    <h3>Upcoming Events</h3>
+    <div class="events">
+        <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Interact and Impact:Public speaking workshop</div><div class="meta">Meet at Riverside Park • 8:00 AM</div></div>
+        </div>
+        <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Unity in Diversity – Celebrating Cultures Through Art: Cultural performances</div><div class="meta">Community Hall • 2:00 PM</div></div>
+        </div>
+        <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Trash to Treasure (T to T): Plastic reuse</div><div class="meta">High School Auditorium • 9:00 AM</div></div>
+        </div>
+         <div class="event">
+            <div class="date">Soon</div>
+            <div>
+                <div style="font-weight:700">Youth Leadership Forum</div><div class="meta">High School Auditorium • 9:00 AM</div></div>
+        </div>
+         <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Connecting education to orphanage</div><div class="meta">High School Auditorium • 9:00 AM</div></div>
+        </div>
+         <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Mataya Service camp</div><div class="meta">High School Auditorium • 9:00 AM</div></div>
+        </div>
+        <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Roots of change: Tree Plantation</div><div class="meta">High School Auditorium • 9:00 AM</div></div>
+        </div>
+        <div class="event">
+            <div class="date">Soon</div>
+            <div><div style="font-weight:700">Wear the change: Clothes donation</div><div class="meta">High School Auditorium • 9:00 AM</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery -->
+<section id="gallery" class="card">
+    <h3>Our Impact in Photos</h3>
+    <p class="small">See the Interact Club of Yala members in action across our recent service projects and fellowship events.</p>
+    <div class="grid-gallery">
+        <div class="gallery-item" style="background-color:#ffe99f;"><div>Park Cleanup</div></div>
+        <div class="gallery-item" style="background-color:#b4d0ff;"><div>Workshop</div></div>
+        <div class="gallery-item" style="background-color:#ffe99f;"><div>Donation Drive</div></div>
+        <div class="gallery-item" style="background-color:#b4d0ff;"><div>Team Meeting</div></div>
+        <div class="gallery-item" style="background-color:#b4d0ff;"><div>Service Day</div></div>
+        <div class="gallery-item" style="background-color:#ffe99f;"><div>Fundraising</div></div>
+        <div class="gallery-item" style="background-color:#ffe99f;"><div>Training</div></div>
+        <div class="gallery-item" style="background-color:#b4d0ff;"><div>Fellowship</div></div>
+    </div>
+    <a class="btn secondary" style="margin-top:1rem" href="#" onclick="alert('Go to full gallery page.')">View Full Gallery</a>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer id="contact">
+    <div class="contact-card">
+        <h3>Contact & Sign Up</h3>
+        <p class="small">Questions or want to join? Send us a message and a member will reply soon.</p>
+        <form onsubmit="event.preventDefault(); alert('Thank you — we will contact you shortly.');">
+            <input type="text" name="name" placeholder="Your name" required />
+            <input type="email" name="email" placeholder="Email address" required />
+            <textarea name="message" placeholder="Message" required></textarea>
+            <div style="display:flex; gap:.6rem; align-items:center;">
+                <button class="btn" type="submit">Send Message</button>
+                <div class="small">Or email: <strong style="color:var(--blue-600)">contact@yala-interact.org</strong></div>
+            </div>
+        </form>
+    </div>
+    <div class="footer-info" style="min-width:220px; display:flex; flex-direction:column; gap:.6rem; align-items:flex-end;">
+        <div style="text-align:right">
+            <div style="font-weight:800; color:var(--blue-600)">Stay Connected</div>
+            <div class="small">Follow our updates and volunteer posts on social platforms.</div>
+        </div>
+        <div style="display:flex; gap:.5rem;">
+            <a class="btn secondary" href="#" onclick="alert('Open social — placeholder')">Facebook</a>
+            <a class="btn secondary" href="#" onclick="alert('Open social — placeholder')">Instagram</a>
+        </div>
+        <div class="small" style="margin-top:.8rem; color:var(--muted)">© Interact Club of Yala — Building leaders since 20XX</div>
+    </div>
+</footer>
+
+<script>
+// Fade-in animation for BOD members when scrolling
+const bodMembers = document.querySelectorAll('.bod-member');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+bodMembers.forEach(member => observer.observe(member));
+</script>
+</body>
+</html>
